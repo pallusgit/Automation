@@ -1,0 +1,41 @@
+package handling_popups;
+
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+
+public class PIBAutomation {
+	static {
+		System.setProperty("webdriver.chrome.driver", "./driver/chromedriver.exe");
+	}
+	public static void main(String[] args) throws InterruptedException {
+		ChromeOptions opt=new ChromeOptions();
+		opt.addArguments("-disable-notifications");
+		WebDriver driver=new ChromeDriver(opt);
+		driver.manage().window().maximize();
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		driver.get("https://pib.gov.in/indexd.aspx");
+		driver.switchTo().alert().accept();
+		driver.findElement(By.linkText("Ministry of Agriculture & Farmers Welfare")).click();
+		driver.switchTo().alert().accept();
+		Thread.sleep(2000);
+		Set<String> allWid = driver.getWindowHandles();
+		System.out.println(allWid.size());
+		for (String wid : allWid) {
+			driver.switchTo().window(wid);
+		}
+		String title = driver.getTitle();
+		System.out.println(title);
+	}
+}
+
+
+
+
+
+
+
